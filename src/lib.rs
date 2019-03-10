@@ -94,7 +94,7 @@ impl DroplessArena {
     pub unsafe fn alloc_uninitialized<T: Copy>(&self, len: usize) -> &mut [T] {
         // may be possible with artificially created slices
         assert!(len*mem::size_of::<T>() < isize::max_value() as usize);
-        let mut chunks = self.chunks.try_borrow_mut().expect("reentrant call to DroplessArena::alloc_extend");
+        let mut chunks = self.chunks.try_borrow_mut().expect("reentrant call to `DroplessArena::alloc_extend`");
         let mut w_ptr = chunks.write_ptr::<T>() as *mut T;
         let end = chunks.end_ptr();
 
