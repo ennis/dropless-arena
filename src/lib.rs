@@ -33,7 +33,7 @@ impl ChunkList {
         let chunk = mem::replace(&mut self.current, Vec::with_capacity(new_capacity));
         self.rest.push(chunk);
         self.w_ptr = self.current.as_mut_ptr();
-        self.end_ptr = unsafe { self.w_ptr.add(additional) };
+        self.end_ptr = unsafe { self.w_ptr.add(new_capacity) };
     }
 
     fn write_ptr<T:Copy>(&mut self) -> *mut u8 {
@@ -47,7 +47,7 @@ impl ChunkList {
     }
 
     fn end_ptr(&mut self) -> *mut u8 {
-        unsafe { self.current.as_mut_ptr().add(self.current.capacity()) }
+        self.end_ptr
     }
 
     fn new(cap: usize) -> ChunkList {
